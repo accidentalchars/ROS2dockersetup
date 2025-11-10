@@ -1,0 +1,41 @@
+services:
+  micro-ros-agent:
+    container_name: micro-ros-agent
+    image: microros/micro-ros-agent:jazzy
+    network_mode: "host"
+    volumes:
+      - /dev:/dev
+    privileged: true
+    command: udp4 -v4 -p 8888
+
+  ros2:
+    container_name: ros2
+    image: osrf/ros:jazzy-desktop
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DISPLAY=$DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - ROS_DOMAIN_ID=82
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ~/.Xauthority:/root/.Xauthority
+      - ./ros2_dev/.bashrc:/root/.bashrc
+      - ./ros2_dev/.bash_history:/root/.bash_history
+      - ./ros2_dev/workspace:/root/ros2_ws
+    network_mode: "host"
+    privileged: true
+    stdin_open: true
+    tty: true
+    command: bash
+
+  rplidar:
+    container_name: rplidar
+    image: husarion/rplidar:jazzy-1.0.1-20250901
+    environment:
+      - RPLIDAR_BAUDRATE=115200
+      - ROS_DOMAIN_ID=82
+    devices:
+      - /dev/ttyUSB0
+    command: ros2 launch sllidar_ros2 sllidar_a2m8_launch.py -d

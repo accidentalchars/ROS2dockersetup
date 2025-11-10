@@ -1,0 +1,7 @@
+  docker compose build                    baut den custom ros2 Container nach Dockerfile-Vorgaben
+  docker compose up -d ros2               führt den ros2 Container im Hintergrund aus
+  docker exec -it ros2 bash               öffnet bash vom ros2 Container, 'exit' um zu beenden
+  docker compose up micro-ros-agent       führt den micro-ros-agent Container im aktuellen Terminal aus
+  docker compose up -d rplidar            führt den rplidar Container im Hintergrund aus
+  docker compose down                     stoppt und entfernt die aktuell laufenden Container
+  docker compose ps                       zeigt Status der Container an
